@@ -3,7 +3,6 @@ def hs(n):
     while (n != 1):
         print(n)
         count = count + 1
-        print(count)
         if (n % 2 == 0):
                 n = (n // 2)
         else:
@@ -13,4 +12,3 @@ def hs(n):
         count = count + 1
         print(count)
         return None
-        print(count)
