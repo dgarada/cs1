@@ -1,0 +1,67 @@
+module bool
+
+import pair
+
+data bool = true | false
+
+id: bool -> bool
+id b = b
+
+constFalse: bool -> bool
+constFalse _ = false
+
+constTrue: bool -> bool
+constTrue _ = true
+
+not: bool -> bool
+not true = false
+not _ = true
+
+andp: pair bool bool -> bool
+andp (mkPair true true) = true
+andp _ = false
+
+orp: pair bool bool -> bool
+orp (mkPair false false) = false
+orp  _  = true
+
+nandp: pair bool bool -> bool
+nandp m = not (andp m)
+
+xorp: pair bool bool -> bool
+xorp (mkPair true false) = true
+xorp (mkPair false true) = true
+xorp _ = false
+
+pand: bool -> bool -> bool
+pand true true = id true
+pand true false = constFalse false
+pand _ _ = constFalse false
+
+
+por : bool -> bool -> bool
+por false false = id false
+por true true = id true
+por _ _ = constTrue true
+
+pxor: bool -> bool -> bool
+pxor false false = id false
+pxor true true = constFalse false
+pxor _ _ = constTrue true
+
+pnand: bool -> bool -> bool
+pnand m n = not (pand m m)
+
+
+-- binary functions (bool -> bool -> bool), implicit
+
+and: bool -> bool -> bool
+and true true = true
+and _ _ = false
+
+uf: bool -> bool
+uf = (and true)
+
+or: bool -> bool -> bool
+or false false = false
+or _ _ = true

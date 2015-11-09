@@ -1,0 +1,93 @@
+module nat
+
+import bool
+import pair
+
+data nat = O | S nat
+
+
+|||returns true if the argument is (represents) zero, otherwise false
+isZero: nat -> bool
+isZero O = true
+isZero _ = false
+
+
+|||returns the successor of  any given nat
+succ: nat-> nat
+succ n = S n
+
+
+|||returns the predecessor of any given nat
+pred: nat -> nat
+pred O = O
+pred (S n) = n
+
+|||returns true if the argument is even otherwise false
+evenb: nat -> bool
+evenb O = true
+evenb (S O) = false
+evenb (S (S n)) = evenb n
+
+
+oddb: nat -> bool
+oddb n = not (evenb n)
+
+{-In evaluating (S r) first it evaluates "r" which is previously stated to be S t. Then it evaluates t, which is defined as the successor of the successor of O, 2, which leads to it being 3. This is then passed through the function (evenb) which evaluates it through; simplifies down to (S(S O)) which is then passed down through the function again. This is passed through as O (nat) which returns the bool (true).-}
+
+
+|||given a pair of natural numbers, return its sum
+addp : pair nat nat -> nat
+addp (mkPair O m) = m
+addp (mkPair (S n) m) = S (addp (mkPair n m))
+
+add : nat -> nat -> nat
+add O m = m
+add (S n) m = S (add n m)
+
+pf: nat -> nat
+pf = add (S (S O))
+
+|||given a pair of natural numbers, return its sum
+multp: pair nat nat -> nat
+multp (mkPair O m) = O
+multp (mkPair (S n) m) = addp (mkPair (multp (mkPair n m))m)
+
+factp: nat -> nat
+factp O = S O
+factp (S n) = multp (mkPair (S n) (factp n))
+
+subp: pair nat nat -> nat
+subp (mkPair O m) = O
+subp (mkPair n O) = n
+subp (mkPair (S n) (S m)) = subp (mkPair n m)
+
+lep: pair nat nat -> bool
+lep (mkPair O m) = true
+lep (mkPair (S n) O) = false
+lep (mkPair (S n) (S m)) = lep (mkPair n m)
+
+exp: pair nat nat -> nat
+exp (mkPair O n) = O
+exp (mkPair (S n) O) = S O
+exp (mkPair n (S O)) = S O
+exp (mkPair (S n) (S m)) = multp (mkPair (S n) (exp (mkPair (S n) (S n))))
+
+eqp: pair nat nat -> bool
+eqp (mkPair O m) = true
+eqp (mkPair (S n) O) = false
+eqp (mkPair (S n) (S m)) = not (andp (mkPair true true))
+
+gep: pair nat nat -> bool
+gep (mkPair O m) = true
+gep (mkPair (S n) O) = true
+gep (mkPair (S n) (S m)) = gep (mkPair n m)
+
+gtp: pair nat nat -> bool
+gtp (mkPair O m) = false
+gtp (mkPair (S n) O) = true
+gtp (mkPair (S n) (S m)) = not (lep (mkPair n m))
+
+ltp: pair nat nat -> bool
+ltp (mkPair O m) = false
+ltp (mkPair (S n) O) = false
+ltp (mkPair (S n) (S m)) = not (gep (mkPair n m))
